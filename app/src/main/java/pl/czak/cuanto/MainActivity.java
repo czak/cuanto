@@ -2,13 +2,12 @@ package pl.czak.cuanto;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.View;
 
 import java.util.Random;
 
@@ -19,6 +18,8 @@ public class MainActivity extends Activity {
     private static final String SEED = "seed";
 
     int seed;
+
+    ViewPager pager;
 
     public int getSeed() {
         return seed;
@@ -54,7 +55,7 @@ public class MainActivity extends Activity {
         else
             seed = new Random().nextInt();
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new QuizPagerAdapter());
     }
 
@@ -73,5 +74,11 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void showAnswer(View view) {
+        FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) pager.getAdapter();
+        CardFragment f = (CardFragment) a.instantiateItem(pager, pager.getCurrentItem());
+        f.showAnswer();
     }
 }

@@ -16,6 +16,8 @@
         android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:padding="10dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"
+        android:visibility="invisible"
+        />
 
 </FrameLayout>

@@ -5,6 +5,23 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/container_buttons"
+        />
+
+    <FrameLayout
+        android:id="@+id/container_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Pokaż odpowiedź"
+            android:onClick="showAnswer" />
+
+    </FrameLayout>
 
 </RelativeLayout>
