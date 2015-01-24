@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import pl.czak.cuanto.models.Card;
 import pl.czak.num2words.Translator;
 
 public class CardFragment extends Fragment
@@ -18,7 +19,10 @@ public class CardFragment extends Fragment
     public static final String KEY_POSITION = "position";
     public static final String KEY_IS_ANSWERED = "isAnswered";
 
-    boolean isAnswered = false;
+    TextView questionView;
+    TextView answerView;
+
+    Card card;
 
     MainActivity activity;
 
@@ -32,8 +36,11 @@ public class CardFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        int position = getArguments() != null ? getArguments().getInt(KEY_POSITION) : 0;
+        card = new Card(activity.getSeed(), position);
+
         if (savedInstanceState != null) {
-            isAnswered = savedInstanceState.getBoolean(KEY_IS_ANSWERED, false);
+            card.setAnswered(savedInstanceState.getBoolean(KEY_IS_ANSWERED, false));
         }
     }
 
@@ -42,12 +49,12 @@ public class CardFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card, container, false);
 
-        TextView card = (TextView) view.findViewById(R.id.card);
-        card.setText(String.valueOf(getNumber()));
+        questionView = (TextView) view.findViewById(R.id.question);
+        questionView.setText(String.valueOf(card.getQuestion()));
 
-        TextView answer = (TextView) view.findViewById(R.id.answer);
-        answer.setText(getAnswer());
-        answer.setVisibility(isAnswered ? View.VISIBLE : View.INVISIBLE);
+        answerView = (TextView) view.findViewById(R.id.answer);
+        answerView.setText(card.getAnswer());
+        answerView.setVisibility(card.isAnswered() ? View.VISIBLE : View.INVISIBLE);
 
         return view;
     }
@@ -55,22 +62,11 @@ public class CardFragment extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_IS_ANSWERED, isAnswered);
-    }
-
-    private int getNumber() {
-        int seed = activity.getSeed();
-        int position = getArguments().getInt(KEY_POSITION);
-        return new Random(seed + position).nextInt(1001);
-    }
-
-    private String getAnswer() {
-        return new Translator().translate(getNumber());
+        outState.putBoolean(KEY_IS_ANSWERED, card.isAnswered());
     }
 
     public void showAnswer() {
-        TextView answer = (TextView) getView().findViewById(R.id.answer);
-        answer.setVisibility(View.VISIBLE);
-        isAnswered = true;
+        answerView.setVisibility(View.VISIBLE);
+        card.setAnswered(true);
     }
 }
