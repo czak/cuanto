@@ -16,8 +16,8 @@ import pl.czak.num2words.Translator;
 
 public class CardFragment extends Fragment
 {
-    public static final String KEY_POSITION = "position";
-    public static final String KEY_IS_ANSWERED = "isAnswered";
+    private static final String KEY_POSITION = "position";
+    private static final String KEY_IS_ANSWERED = "isAnswered";
 
     TextView questionView;
     TextView answerView;
@@ -25,6 +25,16 @@ public class CardFragment extends Fragment
     Card card;
 
     MainActivity activity;
+
+    public static CardFragment create(int position) {
+        CardFragment f = new CardFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(KEY_POSITION, position);
+        f.setArguments(args);
+
+        return f;
+    }
 
     @Override
     public void onAttach(Activity activity) {

@@ -32,11 +32,7 @@ public class MainActivity extends Activity {
 
         @Override
         public Fragment getItem(int position) {
-            Fragment f = new CardFragment();
-            Bundle args = new Bundle();
-            args.putInt(CardFragment.KEY_POSITION, position);
-            f.setArguments(args);
-            return f;
+            return CardFragment.create(position);
         }
 
         @Override
