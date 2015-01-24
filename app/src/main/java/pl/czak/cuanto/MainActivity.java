@@ -1,20 +1,17 @@
 package pl.czak.cuanto;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     ViewPager pager;
 
     @Override
@@ -22,7 +19,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 Fragment f = new CardFragment();
@@ -40,11 +37,6 @@ public class MainActivity extends ActionBarActivity {
 
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(5);
-
-        ViewGroup.LayoutParams params = pager.getLayoutParams();
-        params.width = 500;
-        pager.setLayoutParams(params);
     }
 
     @Override
