@@ -24,4 +24,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'uk.co.chrisjenx:calligraphy:2.0.0'
     compile 'com.android.support:support-v13:21.0.3'
+    compile project(':num2words')
 }

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import pl.czak.num2words.Translator;
+
 public class CardFragment extends Fragment
 {
     public static final String KEY_POSITION = "position";
@@ -31,6 +33,9 @@ public class CardFragment extends Fragment
         TextView card = (TextView) view.findViewById(R.id.card);
         card.setText(String.valueOf(getNumber()));
 
+        TextView answer = (TextView) view.findViewById(R.id.answer);
+        answer.setText(getAnswer());
+
         return view;
     }
 
@@ -38,5 +43,9 @@ public class CardFragment extends Fragment
         int seed = activity.getSeed();
         int position = getArguments().getInt(KEY_POSITION);
         return new Random(seed + position).nextInt(1001);
+    }
+
+    private String getAnswer() {
+        return new Translator().translate(getNumber());
     }
 }

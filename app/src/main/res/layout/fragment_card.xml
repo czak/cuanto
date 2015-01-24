@@ -10,4 +10,12 @@
         android:background="@android:color/white"
         android:gravity="center" />
 
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:padding="10dp"
+        android:background="@android:color/darker_gray" />
+
 </FrameLayout>
