@@ -2,41 +2,66 @@ package pl.czak.cuanto;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.os.PersistableBundle;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+
+import java.util.Random;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends Activity {
-    ViewPager pager;
+    private static final String SEED = "seed";
+
+    int seed;
+
+    public int getSeed() {
+        return seed;
+    }
+
+    class QuizPagerAdapter extends FragmentStatePagerAdapter {
+        public QuizPagerAdapter() {
+            super(getFragmentManager());
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment f = new CardFragment();
+            Bundle args = new Bundle();
+            args.putInt(CardFragment.KEY_POSITION, position);
+            f.setArguments(args);
+            return f;
+        }
+
+        @Override
+        public int getCount() {
+            return Integer.MAX_VALUE;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                Fragment f = new CardFragment();
-                Bundle args = new Bundle();
-                args.putInt("pos", position);
-                f.setArguments(args);
-                return f;
-            }
+        if (savedInstanceState != null && savedInstanceState.containsKey(SEED))
+            seed = savedInstanceState.getInt(SEED);
+        else
+            seed = new Random().nextInt();
 
-            @Override
-            public int getCount() {
-                return 6;
-            }
-        };
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(new QuizPagerAdapter());
+    }
 
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SEED, seed);
     }
 
     @Override
