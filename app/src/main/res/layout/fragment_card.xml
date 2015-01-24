@@ -8,7 +8,9 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:background="@android:color/white"
-        android:gravity="center" />
+        android:gravity="center"
+        style="@android:style/TextAppearance.Holo.Large"
+        />
 
     <TextView
         android:id="@+id/answer"
@@ -16,8 +18,9 @@
         android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:padding="10dp"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/white"
         android:visibility="invisible"
+        style="@android:style/TextAppearance.Holo.Medium"
         />
 
 </FrameLayout>

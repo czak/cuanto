@@ -9,10 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Random;
-
-import pl.czak.cuanto.models.Card;
-import pl.czak.num2words.Translator;
+import pl.czak.cuanto.models.Quiz;
 
 public class CardFragment extends Fragment
 {
@@ -22,7 +19,7 @@ public class CardFragment extends Fragment
     TextView questionView;
     TextView answerView;
 
-    Card card;
+    Quiz.Card card;
 
     MainActivity activity;
 
@@ -47,7 +44,7 @@ public class CardFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         int position = getArguments() != null ? getArguments().getInt(KEY_POSITION) : 0;
-        card = new Card(activity.getSeed(), position);
+        card = activity.getQuiz().getCard(position);
 
         if (savedInstanceState != null) {
             card.setAnswered(savedInstanceState.getBoolean(KEY_IS_ANSWERED, false));

@@ -4,7 +4,7 @@
         <item name="android:actionOverflowButtonStyle">@style/AppTheme.Overflow</item>
         <item name="android:windowContentOverlay">@drawable/shadow</item>
         <item name="android:windowBackground">@drawable/texture_corkboard</item>
-        <item name="android:logo">@drawable/cuanto</item>
+        <item name="android:logo">@drawable/logo</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
@@ -14,5 +14,9 @@
 
     <style name="AppTheme.Overflow" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/overflow</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="@android:style/Widget.Holo.Light.Button">
+        <item name="android:background">@android:drawable/btn_default</item>
     </style>
 </resources>

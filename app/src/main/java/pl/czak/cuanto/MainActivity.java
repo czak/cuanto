@@ -4,25 +4,29 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ToggleButton;
 
+import java.util.Locale;
 import java.util.Random;
 
+import pl.czak.cuanto.models.Quiz;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     private static final String SEED = "seed";
 
-    int seed;
+    Quiz quiz;
 
-    ViewPager pager;
+    TextToSpeech tts;
 
-    public int getSeed() {
-        return seed;
+    public Quiz getQuiz() {
+        return quiz;
     }
 
     class QuizPagerAdapter extends FragmentStatePagerAdapter {
@@ -43,22 +47,30 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        quiz = new Quiz();
+        if (savedInstanceState != null && savedInstanceState.containsKey(SEED)) {
+            quiz.setSeed(savedInstanceState.getLong(SEED));
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(SEED))
-            seed = savedInstanceState.getInt(SEED);
-        else
-            seed = new Random().nextInt();
-
-        pager = (ViewPager) findViewById(R.id.pager);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new QuizPagerAdapter());
+
+        tts = new TextToSpeech(this, this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tts.shutdown();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(SEED, seed);
+        outState.putLong(SEED, quiz.getSeed());
     }
 
     @Override
@@ -72,9 +84,21 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    @Override
+    public void onInit(int status) {
+        tts.setLanguage(new Locale("es"));
+    }
+
     public void showAnswer(View view) {
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) pager.getAdapter();
         CardFragment f = (CardFragment) a.instantiateItem(pager, pager.getCurrentItem());
         f.showAnswer();
+    }
+
+    public void speak(View view) {
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        String text = quiz.getCard(pager.getCurrentItem()).getAnswer();
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 }
