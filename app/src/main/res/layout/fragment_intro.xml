@@ -6,9 +6,14 @@
         android:id="@+id/text_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:layout_gravity="center_vertical"
-        android:padding="10dp"
-        android:background="@android:color/darker_gray" />
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="15dp"
+        android:background="@drawable/card_bg"
+        style="@android:style/TextAppearance.Holo.Large"
+        />
 
 </FrameLayout>

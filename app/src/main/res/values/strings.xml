@@ -9,7 +9,7 @@
 
     <string-array name="intro_pages">
         <item>¿Cuánto es? is a simple app to help you check your knowledge of Spanish numerals.</item>
-        <item>¿Cuánto es? displays random numbers between 0-1000. Can you say them in Spanish?</item>
+        <item>The program displays random numbers between 0-1000. Can you say them in Spanish?</item>
         <item>W każdej chwili możesz odsłonić lub odsłuchać odpowiedź korzystając z przycisków u dołu ekranu.</item>
         <item>At any time you can display or hear the answer using buttons at the bottom of the screen.</item>
     </string-array>

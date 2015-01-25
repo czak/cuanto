@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     private static final String KEY_SEED = "seed";
     private static final String KEY_FIRST_RUN = "firstRun";
     private static final String KEY_LAST_PAGE = "lastPage";
-    private static final int NUM_INTRO_PAGES = 1;
+    private static final int NUM_INTRO_PAGES = 3;
 
     // Aktywna "talia" kart
     Quiz quiz = new Quiz();
