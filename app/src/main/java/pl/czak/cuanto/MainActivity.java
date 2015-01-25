@@ -23,13 +23,18 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     private static final String KEY_SEED = "seed";
     private static final String KEY_FIRST_RUN = "firstRun";
+    private static final String KEY_LAST_PAGE = "lastPage";
     private static final int NUM_INTRO_PAGES = 1;
 
-    Quiz quiz;
+    // Aktywna "talia" kart
+    Quiz quiz = new Quiz();
+
+    // Czy jest to pierwsze uruchomienie aplikacji?
+    boolean firstRun = false;
+
+    ViewPager pager;
 
     TextToSpeech tts;
-
-    boolean firstRun = false;
 
     public Quiz getQuiz() {
         return quiz;
@@ -57,16 +62,15 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     class QuizPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
         @Override
         public void onPageSelected(int page) {
+            Log.i("Activity", "onPageSelected: " + page);
             setControls(page);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        quiz = new Quiz();
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SEED)) {
-            quiz.setSeed(savedInstanceState.getLong(KEY_SEED));
-        }
+        // Ostatnia odwiedzona strona
+        int lastPage = 0;
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         if (prefs.getBoolean(KEY_FIRST_RUN, true)) {
@@ -77,15 +81,23 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             editor.putBoolean(KEY_FIRST_RUN, false);
             editor.commit();
         }
-        else if (savedInstanceState != null && savedInstanceState.containsKey(KEY_FIRST_RUN)) {
-            firstRun = savedInstanceState.getBoolean(KEY_FIRST_RUN);
+
+        if (savedInstanceState != null) {
+            firstRun = savedInstanceState.getBoolean(KEY_FIRST_RUN, false);
+            lastPage = savedInstanceState.getInt(KEY_LAST_PAGE, 0);
+
+            if (savedInstanceState.containsKey(KEY_SEED)) {
+                quiz.setSeed(savedInstanceState.getLong(KEY_SEED));
+            }
         }
+
+        Log.i("Activity", "firstRun: " + firstRun);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setControls(0);
+        setControls(lastPage);
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new QuizPagerAdapter());
         pager.setOnPageChangeListener(new QuizPageChangeListener());
 
@@ -103,6 +115,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_SEED, quiz.getSeed());
         outState.putBoolean(KEY_FIRST_RUN, firstRun);
+        outState.putInt(KEY_LAST_PAGE, pager.getCurrentItem());
     }
 
     @Override
@@ -140,6 +153,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (fragmentManager.findFragmentByTag(tag) != null)
             return;
 
+        Log.i("Activity", "ustawiam kontrolki: " + tag);
+
         // W przeciwnym razie podmianka
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container_controls,
@@ -149,20 +164,17 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     }
 
     public void showAnswer(View view) {
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) pager.getAdapter();
         CardFragment f = (CardFragment) a.instantiateItem(pager, pager.getCurrentItem());
         f.showAnswer();
     }
 
     public void speak(View view) {
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         String text = quiz.getCard(pager.getCurrentItem()).getAnswer();
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     public void nextPage(View view) {
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setCurrentItem(pager.getCurrentItem() + 1);
     }
 }
