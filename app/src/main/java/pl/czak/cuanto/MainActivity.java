@@ -5,10 +5,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -20,11 +22,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     private static final String KEY_SEED = "seed";
+    private static final String KEY_FIRST_RUN = "firstRun";
     private static final int NUM_INTRO_PAGES = 1;
 
     Quiz quiz;
 
     TextToSpeech tts;
+
+    boolean firstRun = false;
 
     public Quiz getQuiz() {
         return quiz;
@@ -37,7 +42,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
         @Override
         public Fragment getItem(int position) {
-            if (position < NUM_INTRO_PAGES)
+            if (firstRun && position < NUM_INTRO_PAGES)
                 return IntroFragment.create(position);
             else
                 return CardFragment.create(position);
@@ -51,25 +56,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
     class QuizPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
         @Override
-        public void onPageSelected(int position) {
-            String tag;
-            if (position < NUM_INTRO_PAGES)
-                tag = ControlsFragment.TAG_INTRO;
-            else
-                tag = ControlsFragment.TAG_QUIZ;
-
-            FragmentManager fragmentManager = getFragmentManager();
-
-            // Jeśli docelowy fragment już jest na miejscu to nic nie robimy
-            if (fragmentManager.findFragmentByTag(tag) != null)
-                return;
-
-            // W przeciwnym razie podmianka
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_controls,
-                    ControlsFragment.newInstance(tag), tag);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            fragmentTransaction.commit();
+        public void onPageSelected(int page) {
+            setControls(page);
         }
     }
 
@@ -80,14 +68,22 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             quiz.setSeed(savedInstanceState.getLong(KEY_SEED));
         }
 
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        if (prefs.getBoolean(KEY_FIRST_RUN, true)) {
+            // To będzie wykonane tylko za pierwszym uruchomieniem
+            firstRun = true;
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(KEY_FIRST_RUN, false);
+            editor.commit();
+        }
+        else if (savedInstanceState != null && savedInstanceState.containsKey(KEY_FIRST_RUN)) {
+            firstRun = savedInstanceState.getBoolean(KEY_FIRST_RUN);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // UI
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container_controls, ControlsFragment.newInstance(ControlsFragment.TAG_INTRO));
-        fragmentTransaction.commit();
+        setControls(0);
 
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new QuizPagerAdapter());
@@ -106,6 +102,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_SEED, quiz.getSeed());
+        outState.putBoolean(KEY_FIRST_RUN, firstRun);
     }
 
     @Override
@@ -122,6 +119,33 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     @Override
     public void onInit(int status) {
         tts.setLanguage(new Locale("es"));
+    }
+
+    /**
+     * Ustawia UI odpowiednie dla wskazanej strony
+     * @param page Numer strony
+     */
+    private void setControls(int page) {
+        String tag;
+        if (firstRun && page < NUM_INTRO_PAGES)
+            tag = ControlsFragment.TAG_INTRO;
+        else
+            tag = ControlsFragment.TAG_QUIZ;
+
+        Log.i("Activity", "setControls: " + page + ", tag: " + tag);
+
+        FragmentManager fragmentManager = getFragmentManager();
+
+        // Jeśli docelowy fragment już jest na miejscu to nic nie robimy
+        if (fragmentManager.findFragmentByTag(tag) != null)
+            return;
+
+        // W przeciwnym razie podmianka
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_controls,
+                ControlsFragment.newInstance(tag), tag);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 
     public void showAnswer(View view) {
