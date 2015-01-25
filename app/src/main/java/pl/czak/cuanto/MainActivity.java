@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -62,7 +61,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     class QuizPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
         @Override
         public void onPageSelected(int page) {
-            Log.i("Activity", "onPageSelected: " + page);
             setControls(page);
         }
     }
@@ -90,8 +88,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 quiz.setSeed(savedInstanceState.getLong(KEY_SEED));
             }
         }
-
-        Log.i("Activity", "firstRun: " + firstRun);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -145,15 +141,11 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         else
             tag = ControlsFragment.TAG_QUIZ;
 
-        Log.i("Activity", "setControls: " + page + ", tag: " + tag);
-
         FragmentManager fragmentManager = getFragmentManager();
 
         // Jeśli docelowy fragment już jest na miejscu to nic nie robimy
         if (fragmentManager.findFragmentByTag(tag) != null)
             return;
-
-        Log.i("Activity", "ustawiam kontrolki: " + tag);
 
         // W przeciwnym razie podmianka
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
