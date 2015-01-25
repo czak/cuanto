@@ -135,4 +135,9 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         String text = quiz.getCard(pager.getCurrentItem()).getAnswer();
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
+
+    public void nextPage(View view) {
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setCurrentItem(pager.getCurrentItem() + 1);
+    }
 }
