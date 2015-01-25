@@ -19,7 +19,7 @@ import pl.czak.cuanto.models.Quiz;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
+public class MainActivity extends Activity {
     private static final String KEY_SEED = "seed";
     private static final String KEY_FIRST_RUN = "firstRun";
     private static final String KEY_LAST_PAGE = "lastPage";
@@ -32,8 +32,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     boolean firstRun = false;
 
     ViewPager pager;
-
-    TextToSpeech tts;
 
     public Quiz getQuiz() {
         return quiz;
@@ -96,14 +94,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new QuizPagerAdapter());
         pager.setOnPageChangeListener(new QuizPageChangeListener());
-
-        tts = new TextToSpeech(this, this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        tts.shutdown();
     }
 
     @Override
@@ -123,11 +113,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public void onInit(int status) {
-        tts.setLanguage(new Locale("es"));
     }
 
     /**
@@ -163,7 +148,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
     public void speak(View view) {
         String text = quiz.getCard(pager.getCurrentItem()).getAnswer();
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        MyApplication app = (MyApplication) getApplication();
+        app.getTts().speak(text + ".", TextToSpeech.QUEUE_FLUSH, null);
     }
 
     public void nextPage(View view) {
