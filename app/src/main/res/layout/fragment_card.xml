@@ -1,15 +1,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
 
     <TextView
         android:id="@+id/question"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:background="@android:color/white"
+        android:layout_margin="15dp"
+        android:background="@drawable/card_bg"
         android:gravity="center"
-        style="@android:style/TextAppearance.Holo.Large"
+        android:textSize="135sp"
+        fontPath="fonts/CabinSketch-Bold.otf"
         />
 
     <TextView
