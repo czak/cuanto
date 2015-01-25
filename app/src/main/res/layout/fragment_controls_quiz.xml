@@ -10,14 +10,18 @@
         android:layout_toLeftOf="@+id/button_speak"
         android:text="@string/button_show_answer"
         android:onClick="showAnswer"
+        style="@style/AppTheme.Button.Green"
         />
 
     <ImageButton
         android:id="@id/button_speak"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_width="49dp"
+        android:layout_height="51dp"
         android:layout_alignParentRight="true"
-        android:src="@android:drawable/ic_lock_silent_mode_off"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button_speaker"
         android:onClick="speak"
         />
 
