@@ -9,20 +9,17 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ToggleButton;
 
 import java.util.Locale;
-import java.util.Random;
 
 import pl.czak.cuanto.models.Quiz;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
-    private static final String SEED = "seed";
+    private static final String KEY_SEED = "seed";
 
     Quiz quiz;
 
@@ -54,31 +51,22 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     class QuizPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
         @Override
         public void onPageSelected(int position) {
+            String tag;
+            if (position == 0)
+                tag = ControlsFragment.TAG_INTRO;
+            else
+                tag = ControlsFragment.TAG_QUIZ;
+
             FragmentManager fragmentManager = getFragmentManager();
 
-            // Jeśli jest już docelowy fragment to nie potrzeba podmieniać
-            if (position == 0) {
-                if (fragmentManager.findFragmentByTag("CONTROLS_INTRO") != null)
-                    return;
-            }
-            else {
-                if (fragmentManager.findFragmentByTag("CONTROLS_QUIZ") != null)
-                    return;
-            }
+            // Jeśli docelowy fragment już jest na miejscu to nic nie robimy
+            if (fragmentManager.findFragmentByTag(tag) != null)
+                return;
 
+            // W przeciwnym razie podmianka
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            if (position == 0) {
-                fragmentTransaction.replace(R.id.container_controls,
-                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_INTRO),
-                        "CONTROLS_INTRO");
-            }
-            else {
-                fragmentTransaction.replace(R.id.container_controls,
-                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_QUIZ),
-                        "CONTROLS_QUIZ");
-            }
-
+            fragmentTransaction.replace(R.id.container_controls,
+                    ControlsFragment.newInstance(tag), tag);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
         }
@@ -87,8 +75,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         quiz = new Quiz();
-        if (savedInstanceState != null && savedInstanceState.containsKey(SEED)) {
-            quiz.setSeed(savedInstanceState.getLong(SEED));
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SEED)) {
+            quiz.setSeed(savedInstanceState.getLong(KEY_SEED));
         }
 
         super.onCreate(savedInstanceState);
@@ -97,7 +85,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         // UI
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container_controls, ControlsFragment.newInstance(ControlsFragment.LAYOUT_INTRO));
+        fragmentTransaction.add(R.id.container_controls, ControlsFragment.newInstance(ControlsFragment.TAG_INTRO));
         fragmentTransaction.commit();
 
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
@@ -116,7 +104,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(SEED, quiz.getSeed());
+        outState.putLong(KEY_SEED, quiz.getSeed());
     }
 
     @Override

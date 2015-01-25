@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 
 public class ControlsFragment extends Fragment
 {
-    public static final int LAYOUT_INTRO = R.layout.fragment_controls_intro;
-    public static final int LAYOUT_QUIZ = R.layout.fragment_controls_quiz;
+    public static final String TAG_INTRO = "INTRO";
+    public static final String TAG_QUIZ = "QUIZ";
 
-    private static final String KEY_LAYOUT = "layout";
+    private static final String KEY_TAG = "tag";
 
-    public static ControlsFragment newInstance(int layout) {
+    public static ControlsFragment newInstance(String tag) {
         ControlsFragment f = new ControlsFragment();
 
         Bundle args = new Bundle();
-        args.putInt(KEY_LAYOUT, layout);
+        args.putString(KEY_TAG, tag);
         f.setArguments(args);
 
         return f;
@@ -28,6 +28,14 @@ public class ControlsFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(getArguments().getInt(KEY_LAYOUT), container, false);
+        return inflater.inflate(getLayoutId(), container, false);
+    }
+
+    private int getLayoutId() {
+        String tag = getArguments().getString(KEY_TAG);
+        if (tag.equals(TAG_INTRO))
+            return R.layout.fragment_controls_intro;
+        else // if (tag == TAG_QUIZ)
+            return R.layout.fragment_controls_quiz;
     }
 }
