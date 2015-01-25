@@ -6,7 +6,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Dalej"
+        android:text="@string/button_continue"
         android:onClick="nextPage" />
 
 </FrameLayout>

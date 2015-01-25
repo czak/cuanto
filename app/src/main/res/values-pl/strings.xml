@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">¿Cuánto es?</string>
+    <string name="about_message">¿Cuánto es?\nWersja 1.0\n© 2015 Łukasz Adamczak\nhttp://czak.pl</string>
+    <string name="action_about">O programie</string>
+    <string name="button_continue">Dalej</string>
+    <string name="button_show_answer">Pokaż odpowiedź</string>
+
+    <string-array name="intro_pages">
+        <item>¿Cuánto es? jest prostym programem, dzięki któremu sprawdzisz swoją znajomość hiszpańskich liczebników.</item>
+        <item>¿Cuánto es? prezentuje losowe liczby z przedziału 0-1000. Czy umiesz przeczytać je po hiszpańsku?</item>
+        <item>W każdej chwili możesz odsłonić lub odsłuchać odpowiedź korzystając z przycisków u dołu ekranu.</item>
+    </string-array>
+</resources>

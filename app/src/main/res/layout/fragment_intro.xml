@@ -9,7 +9,6 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_vertical"
         android:padding="10dp"
-        android:background="@android:color/darker_gray"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@android:color/darker_gray" />
 
 </FrameLayout>

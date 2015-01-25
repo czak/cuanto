@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/button_speak"
-        android:text="Pokaż odpowiedź"
+        android:text="@string/button_show_answer"
         android:onClick="showAnswer"
         />
 
