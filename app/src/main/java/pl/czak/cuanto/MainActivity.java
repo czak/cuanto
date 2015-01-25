@@ -128,6 +128,7 @@ public class MainActivity extends Activity {
                 Linkify.addLinks(msg, Linkify.WEB_URLS);
 
                 new AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
                         .setMessage(msg)
                         .setPositiveButton("OK", null)
                         .show();

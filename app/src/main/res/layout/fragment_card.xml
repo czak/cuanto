@@ -18,12 +18,11 @@
     <TextView
         android:id="@+id/answer"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
         android:layout_gravity="bottom"
-        android:padding="10dp"
-        android:background="@android:color/white"
         android:visibility="invisible"
-        style="@android:style/TextAppearance.Holo.Medium"
+        style="@android:style/TextAppearance.Holo.Large"
         />
 
 </FrameLayout>

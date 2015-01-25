@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">¿Cuánto es?</string>
-    <string name="about_message">¿Cuánto es?\nWersja 1.0\n© 2015 Łukasz Adamczak\nhttp://czak.pl</string>
+    <string name="about_message">Wersja 1.0\n© 2015 Łukasz Adamczak\nhttp://czak.pl</string>
     <string name="action_about">O programie</string>
-    <string name="button_continue">Dalej</string>
-    <string name="button_show_answer">Pokaż odpowiedź</string>
+    <string name="button_continue">DALEJ</string>
+    <string name="button_show_answer">POKAŻ ODPOWIEDŹ</string>
 
     <string-array name="intro_pages">
         <item>¿Cuánto es? jest prostym programem, dzięki któremu sprawdzisz swoją znajomość hiszpańskich liczebników.</item>
