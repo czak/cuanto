@@ -55,15 +55,28 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         @Override
         public void onPageSelected(int position) {
             FragmentManager fragmentManager = getFragmentManager();
+
+            // Jeśli jest już docelowy fragment to nie potrzeba podmieniać
+            if (position == 0) {
+                if (fragmentManager.findFragmentByTag("CONTROLS_INTRO") != null)
+                    return;
+            }
+            else {
+                if (fragmentManager.findFragmentByTag("CONTROLS_QUIZ") != null)
+                    return;
+            }
+
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             if (position == 0) {
                 fragmentTransaction.replace(R.id.container_controls,
-                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_INTRO));
+                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_INTRO),
+                        "CONTROLS_INTRO");
             }
             else {
                 fragmentTransaction.replace(R.id.container_controls,
-                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_QUIZ));
+                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_QUIZ),
+                        "CONTROLS_QUIZ");
             }
 
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
