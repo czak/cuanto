@@ -1,6 +1,7 @@
 package pl.czak.cuanto;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -10,7 +11,11 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
+import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.Locale;
@@ -113,6 +118,23 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                SpannableString msg = new SpannableString(getString(R.string.about_message));
+                Linkify.addLinks(msg, Linkify.WEB_URLS);
+
+                new AlertDialog.Builder(this)
+                        .setMessage(msg)
+                        .setPositiveButton("OK", null)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
