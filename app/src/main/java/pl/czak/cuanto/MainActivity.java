@@ -124,14 +124,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_about:
-                SpannableString msg = new SpannableString(getString(R.string.about_message));
-                Linkify.addLinks(msg, Linkify.WEB_URLS);
-
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.app_name)
-                        .setMessage(msg)
-                        .setPositiveButton("OK", null)
-                        .show();
+                new AboutDialogFragment().show(getFragmentManager(), "About");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
