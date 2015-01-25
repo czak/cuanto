@@ -2,11 +2,14 @@ package pl.czak.cuanto;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ToggleButton;
@@ -36,7 +39,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
         @Override
         public Fragment getItem(int position) {
-            if (position < 3)
+            if (position < 1)
                 return IntroFragment.create(position);
             else
                 return CardFragment.create(position);
@@ -45,6 +48,26 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         @Override
         public int getCount() {
             return Integer.MAX_VALUE;
+        }
+    }
+
+    class QuizPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+        @Override
+        public void onPageSelected(int position) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            if (position == 0) {
+                fragmentTransaction.replace(R.id.container_controls,
+                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_INTRO));
+            }
+            else {
+                fragmentTransaction.replace(R.id.container_controls,
+                        ControlsFragment.newInstance(ControlsFragment.LAYOUT_QUIZ));
+            }
+
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
         }
     }
 
@@ -58,8 +81,15 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // UI
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.container_controls, ControlsFragment.newInstance(ControlsFragment.LAYOUT_INTRO));
+        fragmentTransaction.commit();
+
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new QuizPagerAdapter());
+        pager.setOnPageChangeListener(new QuizPageChangeListener());
 
         tts = new TextToSpeech(this, this);
     }

@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button_show_answer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/button_speak"
+        android:text="Pokaż odpowiedź"
+        android:onClick="showAnswer"
+        />
+
+    <ImageButton
+        android:id="@id/button_speak"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_lock_silent_mode_off"
+        android:onClick="speak"
+        />
+
+</RelativeLayout>

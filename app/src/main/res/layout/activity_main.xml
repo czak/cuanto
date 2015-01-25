@@ -6,34 +6,14 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/container_buttons"
+        android:layout_above="@+id/container_controls"
         />
 
-    <RelativeLayout
-        android:id="@+id/container_buttons"
+    <FrameLayout
+        android:id="@id/container_controls"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white">
-
-        <Button
-            android:id="@+id/button_show_answer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/button_speak"
-            android:text="Pokaż odpowiedź"
-            android:onClick="showAnswer"
-            />
-
-        <ImageButton
-            android:id="@id/button_speak"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:src="@android:drawable/ic_lock_silent_mode_off"
-            android:onClick="speak"
-            />
-
-    </RelativeLayout>
+        android:background="@android:color/white" />
 
 </RelativeLayout>
