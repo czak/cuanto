@@ -20,6 +20,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     private static final String KEY_SEED = "seed";
+    private static final int NUM_INTRO_PAGES = 1;
 
     Quiz quiz;
 
@@ -36,7 +37,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
         @Override
         public Fragment getItem(int position) {
-            if (position < 1)
+            if (position < NUM_INTRO_PAGES)
                 return IntroFragment.create(position);
             else
                 return CardFragment.create(position);
@@ -52,7 +53,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         @Override
         public void onPageSelected(int position) {
             String tag;
-            if (position == 0)
+            if (position < NUM_INTRO_PAGES)
                 tag = ControlsFragment.TAG_INTRO;
             else
                 tag = ControlsFragment.TAG_QUIZ;
