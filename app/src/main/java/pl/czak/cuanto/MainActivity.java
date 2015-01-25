@@ -36,7 +36,10 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
         @Override
         public Fragment getItem(int position) {
-            return CardFragment.create(position);
+            if (position < 3)
+                return IntroFragment.create(position);
+            else
+                return CardFragment.create(position);
         }
 
         @Override
