@@ -3,7 +3,7 @@
 
     <string name="app_name">¿Cuánto es?</string>
     <string name="action_about">About</string>
-    <string name="about_message">Version 1.0\n© 2015 Łukasz Adamczak\nhttp://czak.pl</string>
+    <string name="about_message">Version 1.0\n© 2015-2016 Łukasz Adamczak\nhttp://czak.pl</string>
     <string name="button_continue">CONTINUE</string>
     <string name="button_show_answer">SHOW ANSWER</string>
 
